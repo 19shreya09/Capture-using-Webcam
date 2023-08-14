@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  a {
+      padding: 10px;
+      background-color: orange;
+      color: white;
+      text-decoration: none;
+  }
+</style>
+</head>
+<body>
+
+<video id="webCam" autoplay playsinline width="800" height="800"></video>
+<canvas id="canvas" width="800" height="800"></canvas>
+<a id="snapshotButton" download="snapshot.png">SNAP</a>
+
+<script>
+const video = document.getElementById('webCam');
+const canvas = document.getElementById('canvas');
+const snapshotButton = document.getElementById('snapshotButton');
+
+navigator.mediaDevices.getUserMedia({ video: true })
+  .then(function (stream) {
+    video.srcObject = stream;
+  })
+  .catch(function (error) {
+    console.error('Error accessing the webcam:', error);
+  });
+
+snapshotButton.addEventListener('click', function () {
+  canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+  const snapshotDataURL = canvas.toDataURL('image/png');
+  snapshotButton.href = snapshotDataURL;
+});
+</script>
+
+</body>
+</html>
